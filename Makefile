@@ -493,6 +493,13 @@ all::
 #
 #        Enable -pedantic compilation. This also disables
 #        USE_PARENS_AROUND_GETTEXT_N to produce only relevant warnings.
+#
+# To build the docs more quickly do the following on a Mac:
+# $ export XML_CATALOG_FILES=/usr/local/etc/xml/catalog
+#
+# See:
+# https://public-inbox.org/git/CAJD5XBze8S23umS5enPaOKF6RFKwqkY-ZyuAfLG4SBp8CbCeRg@mail.gmail.com/
+# https://public-inbox.org/git/459453F8.1010200@midwinter.com/
 
 GIT-VERSION-FILE: FORCE
 	@$(SHELL_PATH) ./GIT-VERSION-GEN
