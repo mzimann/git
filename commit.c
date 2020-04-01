@@ -888,14 +888,15 @@ struct rev_collect {
 	unsigned int initial : 1;
 };
 
-static void add_one_commit(struct object_id *oid, struct rev_collect *revs)
+static void add_one_commit(struct repository *r, struct object_id *oid,
+			   struct rev_collect *revs)
 {
 	struct commit *commit;
 
 	if (is_null_oid(oid))
 		return;
 
-	commit = lookup_commit(the_repository, oid);
+	commit = lookup_commit(r, oid);
 	if (!commit ||
 	    (commit->object.flags & TMP_MARK) ||
 	    parse_commit(commit))
@@ -914,9 +915,9 @@ static int collect_one_reflog_ent(struct object_id *ooid, struct object_id *noid
 
 	if (revs->initial) {
 		revs->initial = 0;
-		add_one_commit(ooid, revs);
+		add_one_commit(the_repository, ooid, revs);
 	}
-	add_one_commit(noid, revs);
+	add_one_commit(the_repository, noid, revs);
 	return 0;
 }
 
@@ -943,7 +944,7 @@ struct commit *get_fork_point(const char *refname, struct commit *commit)
 	for_each_reflog_ent(full_refname, collect_one_reflog_ent, &revs);
 
 	if (!revs.nr)
-		add_one_commit(&oid, &revs);
+		add_one_commit(the_repository, &oid, &revs);
 
 	for (i = 0; i < revs.nr; i++)
 		revs.commit[i]->object.flags &= ~TMP_MARK;
