@@ -154,6 +154,12 @@ test_expect_success 'git log --follow' '
 	verbose test "$actual" = "$expect"
 '
 
+test_expect_failure 'git log --follow --reverse' '
+	actual=$(git log --follow --reverse --pretty="format:%s" ichi) &&
+	expect=$(echo initial ; echo second ; echo third) &&
+	verbose test "$actual" = "$expect"
+'
+
 test_expect_success 'git config log.follow works like --follow' '
 	test_config log.follow true &&
 	actual=$(git log --pretty="format:%s" ichi) &&
